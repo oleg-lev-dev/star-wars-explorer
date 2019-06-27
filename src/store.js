@@ -5,6 +5,8 @@ import moment from 'moment';
 
 Vue.use(Vuex);
 
+const API_HOST = 'https://swapi.co/api'; // TODO: move to .env
+
 function getIdFromUrl(url) {
   return url.split('/').reverse()[1]
 }
@@ -59,10 +61,10 @@ export default new Vuex.Store({
   },
   actions: {
     async searchStarships(store, searchQuery = '') {
-      const url = `https://swapi.co/api/starships?format=json&search=${searchQuery}`;
+      const url = `${API_HOST}/starships?format=json&search=${searchQuery}`;
       store.dispatch('fetchStarships', url)
     },
-    fetchStarships: async function (store, url = 'https://swapi.co/api/starships?format=json') {
+    fetchStarships: async function (store, url = `${API_HOST}/starships?format=json`) {
       try {
         this.commit('setIsLoading', true);
         const starships = await axios.get(url);
@@ -74,7 +76,7 @@ export default new Vuex.Store({
     },
     fetchStarship: async function (store, id) {
       try {
-        const url = `https://swapi.co/api/starships/${id}?format=json`;
+        const url = `${API_HOST}/starships/${id}?format=json`;
         this.commit('setIsLoading', true);
         const starship = await axios.get(url);
         let mappedStarship = mapStarship(starship.data);
