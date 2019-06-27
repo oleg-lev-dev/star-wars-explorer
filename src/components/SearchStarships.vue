@@ -16,9 +16,13 @@
       };
     },
     watch: {
-      searchText: function (value) {
-        this.$store.dispatch('searchStarships', value.trim())
+      searchText: function (value = '') {
+        this.$store.dispatch('searchStarships', value.trim());
+        this.$router.replace({name: "home", query: {search: value.trim()}})
       }
+    },
+    mounted() {
+      this.searchText = this.$route.query.search;
     }
   };
 </script>

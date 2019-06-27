@@ -55,7 +55,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async searchStarships(store, searchQuery) {
+    async searchStarships(store, searchQuery = '') {
       const url = `https://swapi.co/api/starships?format=json&search=${searchQuery}`;
       store.dispatch('fetchStarships', url)
     },
@@ -71,8 +71,9 @@ export default new Vuex.Store({
     },
     fetchStarship: async function (store, id) {
       try {
+        const url = `https://swapi.co/api/starships/${id}?format=json`;
         this.commit('setIsLoading', true);
-        const starships = await axios.get(`https://swapi.co/api/starships/${id}?format=json`);
+        const starships = await axios.get(url);
         this.commit('updateStarship', mapStarship(starships.data));
         this.commit('setIsLoading', false);
       } catch (error) {

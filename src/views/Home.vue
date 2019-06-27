@@ -22,13 +22,13 @@
     },
 
     mounted() {
-      this.$store.dispatch('fetchStarships');
+      this.$store.dispatch('searchStarships', this.$route.query.search);
     }
   };
 </script>
 
 <style scoped lang="scss">
-  .wrap{
+  .wrap {
     height: calc(100% - 80px);
   }
 </style>

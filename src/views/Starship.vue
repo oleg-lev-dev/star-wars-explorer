@@ -25,8 +25,6 @@
       },
 
       starshipTableData: function () {
-        console.log('starship', this.starship);
-
         return  Object.keys(this.starship).reduce((acc, item) => ([...acc, {
           key: item,
           val: this.starship[item]
@@ -34,13 +32,10 @@
       }
     },
 
-    data: function () {
-      return {}
-    },
-
     mounted() {
       this.$store.dispatch('fetchStarship', this.$route.params.id);
     },
+
     methods: {
       onClick() {
         this.$router.push('about');
