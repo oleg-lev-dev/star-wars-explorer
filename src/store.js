@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -11,7 +12,9 @@ function getIdFromUrl(url) {
 function mapStarship(starship) {
   return {
     ...starship,
-    id: getIdFromUrl(starship.url)
+    id: getIdFromUrl(starship.url),
+    created: moment(starship.created).format('YYYY-MM-DD hh:mm:s'),
+    edited: moment(starship.edited).format('YYYY-MM-DD hh:mm:s')
   };
 }
 
@@ -95,7 +98,7 @@ export default new Vuex.Store({
             return axios.get(film)
           })
         );
-        
+
         mappedStarship = {
           ...mappedStarship,
           films: films.map((film) => film.data.title).join(', '),
