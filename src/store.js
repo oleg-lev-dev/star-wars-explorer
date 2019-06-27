@@ -73,9 +73,36 @@ export default new Vuex.Store({
       try {
         const url = `https://swapi.co/api/starships/${id}?format=json`;
         this.commit('setIsLoading', true);
-        const starships = await axios.get(url);
-        this.commit('updateStarship', mapStarship(starships.data));
+        const starship = await axios.get(url);
+        let mappedStarship = mapStarship(starship.data);
+        this.commit('updateStarship', mappedStarship);
         this.commit('setIsLoading', false);
+
+        const pilots = await Promise.all(
+          mappedStarship.pilots.map((pilot) => {
+            return axios.get(pilot)
+          })
+        );
+
+        mappedStarship = {
+          ...mappedStarship,
+          pilots: pilots.map((pilot) => pilot.data.name).join(', '),
+        };
+        this.commit('updateStarship', mappedStarship);
+
+        const films = await Promise.all(
+          mappedStarship.films.map((film) => {
+            return axios.get(film)
+          })
+        );
+        
+        mappedStarship = {
+          ...mappedStarship,
+          films: films.map((film) => film.data.title).join(', '),
+        };
+
+        this.commit('updateStarship', mappedStarship);
+
       } catch (error) {
         console.error('unable to load starships', error);
       }
